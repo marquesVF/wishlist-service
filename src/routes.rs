@@ -11,7 +11,8 @@ pub fn register_routes(router: Router) -> Router {
     path = "/wishlists/:user_id",
     tag = "Wishlists",
     responses(
-        (status = 200, body = Wishlist, description = "Returns an user's wishlists")
+        (status = 200, body = Wishlist, description = "Returns an user's wishlists"),
+        (status = 404, description = "The user has no wishlists"),
     )
 )]
 async fn get_wishlists(Path(user_id): Path<String>) -> impl IntoResponse {
