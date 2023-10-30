@@ -1,17 +1,24 @@
-use revolt_rocket_okapi::{openapi, openapi_get_routes};
-use rocket::serde::json::Json;
-use rocket::{get, Build, Rocket};
+use axum::{extract::Path, response::IntoResponse, routing::get, Json, Router};
 
 use crate::wishlists::Wishlist;
 
-pub fn register_routes(rocket: Rocket<Build>) -> Rocket<Build> {
-    rocket.mount("/wishlists", openapi_get_routes![wishlists])
+pub fn register_routes(router: Router) -> Router {
+    router.route("/wishlists/:user_id", get(get_wishlists))
 }
 
-#[openapi(tag = "Wishlist")]
-#[get("/")]
-fn wishlists() -> Json<Wishlist> {
-    Json(Wishlist {
-        name: "Some Name".to_string(),
-    })
+#[utoipa::path(
+    get,
+    path = "/wishlists/:user_id",
+    tag = "Wishlists",
+    responses(
+        (status = 200, body = Wishlist, description = "Returns an user's wishlists")
+    )
+)]
+async fn get_wishlists(Path(user_id): Path<String>) -> impl IntoResponse {
+    let wishlist = Wishlist {
+        name: "default".to_string(),
+        user_id,
+    };
+
+    Json(vec![wishlist])
 }

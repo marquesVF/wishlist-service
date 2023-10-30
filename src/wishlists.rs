@@ -1,6 +1,7 @@
-use revolt_rocket_okapi::JsonSchema;
+use utoipa::ToSchema;
 
-#[derive(serde::Serialize, JsonSchema)]
+#[derive(serde::Serialize, ToSchema)]
 pub struct Wishlist {
+    pub user_id: String,
     pub name: String,
 }

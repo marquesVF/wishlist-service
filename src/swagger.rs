@@ -1,14 +1,20 @@
-use revolt_rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
+use super::wishlists::Wishlist;
+use crate::routes::__path_get_wishlists;
+use axum::Router;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
-use rocket::{Rocket, Build};
+#[derive(OpenApi)]
+#[openapi(
+        paths(
+            get_wishlists,
+        ),
+        components(
+            schemas(Wishlist)
+        ),
+    )]
+struct ApiDoc;
 
-pub fn register_swagger(rocket: Rocket<Build>) -> Rocket<Build> {
-  rocket.mount("/docs", make_swagger_ui(&get_docs()))
-}
-
-fn get_docs() -> SwaggerUIConfig {
-    SwaggerUIConfig {
-        url: "/wishlists/openapi.json".to_string(),
-        ..Default::default()
-    }
+pub fn register_swagger(router: Router) -> Router {
+    router.merge(SwaggerUi::new("/docs").url("/docs/openapi.json", ApiDoc::openapi()))
 }
