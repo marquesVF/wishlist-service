@@ -20,8 +20,7 @@ fn wishlists() -> Json<Response> {
 
 #[launch]
 fn rocket() -> _ {
-    let rocket = rocket::build()
-        .mount("/wishlists", openapi_get_routes![wishlists]);
+    let rocket = rocket::build().mount("/wishlists", openapi_get_routes![wishlists]);
 
     register_swagger(rocket)
 }

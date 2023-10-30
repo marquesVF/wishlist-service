@@ -12,4 +12,3 @@ schemars = "0.8"
 okapi = { version = "0.6.0-alpha-1" }
 revolt_rocket_okapi = { version = "0.9.1", features = ["swagger"] }
 serde = { version = "1.0.188", features = ["derive", "rc"] }
-
