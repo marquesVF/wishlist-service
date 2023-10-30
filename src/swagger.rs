@@ -1,18 +1,16 @@
-use super::wishlists::Wishlist;
-use crate::routes::__path_get_wishlists;
+use crate::routes::{
+    get_wishlist::{Wishlist, __path_get_wishlists},
+    post_wishlist::{CreateWishlist, __path_post_wishlist},
+};
 use axum::Router;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(OpenApi)]
 #[openapi(
-        paths(
-            get_wishlists,
-        ),
-        components(
-            schemas(Wishlist)
-        ),
-    )]
+    paths(get_wishlists, post_wishlist),
+    components(schemas(Wishlist, CreateWishlist))
+)]
 struct ApiDoc;
 
 pub fn register_swagger(router: Router) -> Router {

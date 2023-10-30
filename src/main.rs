@@ -1,6 +1,5 @@
 mod routes;
 mod swagger;
-mod wishlists;
 
 use routes::register_routes;
 use std::net::SocketAddr;
