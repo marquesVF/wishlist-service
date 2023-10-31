@@ -1,11 +1,5 @@
 use axum::{extract::Path, response::IntoResponse, Json};
-use utoipa::ToSchema;
-
-#[derive(serde::Serialize, ToSchema)]
-pub struct Wishlist {
-    pub user_id: String,
-    pub name: String,
-}
+use sqlite_provider::find_user_wishlists;
 
 #[utoipa::path(
     get,
@@ -17,10 +11,7 @@ pub struct Wishlist {
     )
 )]
 pub async fn get_wishlists(Path(user_id): Path<String>) -> impl IntoResponse {
-    let wishlist = Wishlist {
-        name: "default".to_string(),
-        user_id,
-    };
+    let wishlist = find_user_wishlists(&user_id).await;
 
     Json(vec![wishlist])
 }

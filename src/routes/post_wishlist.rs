@@ -1,7 +1,6 @@
 use axum::{extract::Path, http::StatusCode, response::IntoResponse, Json};
+use sqlite_provider::create_wishlist;
 use utoipa::ToSchema;
-
-use super::get_wishlist::Wishlist;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
 pub struct CreateWishlist {
@@ -22,10 +21,7 @@ pub async fn post_wishlist(
     Path(user_id): Path<String>,
     Json(input): Json<CreateWishlist>,
 ) -> impl IntoResponse {
-    let wishlist = Wishlist {
-        name: input.name,
-        user_id,
-    };
+    let wishlists = create_wishlist(&input.name, &user_id).await;
 
-    (StatusCode::CREATED, Json(vec![wishlist]))
+    (StatusCode::CREATED, Json(wishlists))
 }

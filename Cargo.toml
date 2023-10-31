@@ -1,3 +1,9 @@
+[workspace]
+members = [
+  "crates/wishlist",
+  "crates/sqlite_provider",
+]
+
 [package]
 name = "wishlist-service"
 version = "0.1.0"
@@ -7,6 +13,8 @@ edition = "2021"
 
 	
 [dependencies]
+wishlist = { path = "./crates/wishlist"}
+sqlite_provider = { path = "./crates/sqlite_provider"}
 axum = "0.6.20"
 axum-macros = "0.3.8"
 serde = { version = "1.0.188", features = ["derive", "rc"] }
