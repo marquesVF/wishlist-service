@@ -1,13 +1,21 @@
 pub mod get_wishlist;
 pub mod post_wishlist;
+pub mod put_wishlist;
 
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, put},
+    Router,
+};
 
-use self::{get_wishlist::get_wishlists, post_wishlist::post_wishlist};
+use self::{
+    get_wishlist::get_wishlists, post_wishlist::post_wishlist, put_wishlist::put_item_in_wishlists,
+};
 
 pub fn register_routes(router: Router) -> Router {
-    router.route(
-        "/wishlists/:user_id",
-        get(get_wishlists).post(post_wishlist),
-    )
+    router
+        .route(
+            "/wishlists/from_user/:user_id",
+            get(get_wishlists).post(post_wishlist),
+        )
+        .route("/wishlists/:wishlist_id", put(put_item_in_wishlists))
 }

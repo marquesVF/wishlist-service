@@ -20,7 +20,7 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     let router = register_routes(Router::new());
     let app = register_swagger(router)
         // Using tower to add tracing layer
