@@ -9,7 +9,7 @@ pub struct CreateWishlist {
 
 #[utoipa::path(
     post,
-    path = "/wishlists/{user_id}",
+    path = "/wishlists/from_user/{user_id}",
     tag = "Wishlist",
     request_body = CreateWishlist,
     responses(
@@ -21,7 +21,7 @@ pub async fn post_wishlist(
     Path(user_id): Path<String>,
     Json(input): Json<CreateWishlist>,
 ) -> impl IntoResponse {
-    let wishlists = create_wishlist(&input.name, &user_id).await;
+    let wishlists = create_wishlist(input.name, user_id).await;
 
     (StatusCode::CREATED, Json(wishlists))
 }
