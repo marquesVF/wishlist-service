@@ -5,6 +5,7 @@ use utoipa::ToSchema;
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
 pub struct AddProductToWishlist {
     pub product_sku: String,
+    pub price_in_cents: u32,
 }
 
 #[utoipa::path(
@@ -20,7 +21,12 @@ pub async fn put_item_in_wishlists(
     Path(wishlist_id): Path<String>,
     Json(add_product): Json<AddProductToWishlist>,
 ) -> impl IntoResponse {
-    let wishlists = add_product_to_wishlists(wishlist_id, add_product.product_sku).await;
+    let wishlists = add_product_to_wishlists(
+        wishlist_id,
+        add_product.product_sku,
+        add_product.price_in_cents,
+    )
+    .await;
 
     Json(wishlists)
 }

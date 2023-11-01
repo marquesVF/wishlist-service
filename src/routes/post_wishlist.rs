@@ -7,6 +7,7 @@ pub struct CreateWishlist {
     pub name: String,
     pub user_id: String,
     pub product_sku: String,
+    pub price_in_cents: u32,
 }
 
 #[utoipa::path(
@@ -20,7 +21,13 @@ pub struct CreateWishlist {
     )
 )]
 pub async fn post_wishlist(Json(input): Json<CreateWishlist>) -> impl IntoResponse {
-    let wishlists = create_wishlist(input.name, input.product_sku, input.user_id).await;
+    let wishlists = create_wishlist(
+        input.name,
+        input.product_sku,
+        input.user_id,
+        input.price_in_cents,
+    )
+    .await;
 
     (StatusCode::CREATED, Json(wishlists))
 }

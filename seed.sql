@@ -1,11 +1,5 @@
 -- SQLite Compatible
 
--- Products
-create table Product (
-  sku VARCHAR PRIMARY KEY,
-  price_in_cents INTEGER NOT NULL
-);
-
 -- Wishlist
 create table Wishlist (
   id INTEGER PRIMARY KEY,
@@ -13,32 +7,28 @@ create table Wishlist (
   user_id VARCHAR NOT NULL
 );
 
--- WishlistHasProducts
-create table WishlistHasProducts (
-  wishlist_id INTEGER REFERENCES Wishlist(id) UNIQUE,
-  product_sku VARCHAR REFERENCES Product(sku),
-  UNIQUE(wishlist_id, product_sku)
-);
+-- Product
+create table Product (
+  wishlist_id INTEGER REFERENCES Wishlist(id),
+  sku VARCHAR NOT NULL,
+  price_in_cents INTEGER NOT NULL,
 
--- Demo
-INSERT INTO Product (sku, price_in_cents)
-  VALUES
-    ("1", 1174),
-    ("2", 4740),
-    ("3", 3999),
-    ("4", 2699),
-    ("5", 2399),
-    ("6", 1174),
-    ("7", 8320),
-    ("8", 5040),
-    ("9", 1000),
-    ("10", 9399);
+  UNIQUE(wishlist_id, sku)
+);
 
 INSERT INTO Wishlist (name, user_id)
   VALUES
-    ("My new kitchen", "vini");
-
-INSERT INTO WishlistHasProducts (wishlist_id, product_sku)
+    ("My new kitchen", "user_01");
+INSERT INTO Product (wishlist_id, sku, price_in_cents)
   VALUES
-    (1, "1"),
-    (1, "2");
+    (1, "13423-12231", 2344),
+    (1, "99239-38383", 2000);
+
+INSERT INTO Wishlist (name, user_id)
+  VALUES
+    ("Paintings", "anonymous_user_01");
+INSERT INTO Product (wishlist_id, sku, price_in_cents)
+  VALUES
+    (2, "82908", 1220),
+    (2, "23894", 9399),
+    (2, "93231", 2040);

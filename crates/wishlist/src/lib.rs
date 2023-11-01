@@ -12,12 +12,5 @@ pub struct Wishlist {
 #[derive(Serialize, Deserialize, ToSchema, Debug)]
 pub struct Product {
     pub sku: String,
-    pub name: String,
     pub price_in_cents: u32,
 }
-
-// pub trait WishlistProvider {
-//     fn create_wishlist() -> Wishlist;
-//     fn get_user_wishlists() -> Vec<Wishlist>;
-//     fn add_product_to_wishlist(String, String) -> Wishlist;
-// }
