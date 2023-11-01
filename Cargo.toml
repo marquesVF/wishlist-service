@@ -13,6 +13,7 @@ edition = "2021"
 
 	
 [dependencies]
+async-trait = "0.1.74"
 wishlist = { path = "./crates/wishlist"}
 sqlite_provider = { path = "./crates/sqlite_provider"}
 axum = "0.6.20"

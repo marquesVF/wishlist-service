@@ -1,6 +1,5 @@
 use axum::{extract::Path, response::IntoResponse, Json};
-use sqlite_provider::{get_user_wishlists, SQLiteProvider};
-use wishlist::WishlistProvider;
+use sqlite_provider::SQLiteProvider;
 
 #[utoipa::path(
     get,
@@ -12,11 +11,8 @@ use wishlist::WishlistProvider;
     )
 )]
 pub async fn get_wishlists(Path(user_id): Path<String>) -> impl IntoResponse {
-    //
-    // let provider = SQLiteProvider {};
-    // provider.
-
-    let wishlist = get_user_wishlists(user_id).await;
+    let sqlite_provider = SQLiteProvider::new("data.db").await;
+    let wishlist = sqlite_provider.get_user_wishlists(user_id).await;
 
     Json(wishlist)
 }
