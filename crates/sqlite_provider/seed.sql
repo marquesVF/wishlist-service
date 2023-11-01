@@ -17,7 +17,8 @@ create table Wishlist (
 -- WishlistHasProducts
 create table WishlistHasProducts (
   wishlist_id INTEGER REFERENCES Wishlist(id),
-  product_sku INTEGER REFERENCES Product(sku)
+  product_sku INTEGER REFERENCES Product(sku),
+  UNIQUE(wishlist_id, product_sku)
 );
 
 -- Demo
@@ -35,5 +36,5 @@ INSERT INTO Wishlist (name, user_id)
 
 INSERT INTO WishlistHasProducts (wishlist_id, product_sku)
   VALUES
-    (1, "234342"),
-    (1, "193211");
+    (1, "1"),
+    (1, "2");
