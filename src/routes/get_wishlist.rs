@@ -10,7 +10,7 @@ use sqlite_provider::get_user_wishlists;
         (status = 404, description = "The user has no wishlists"),
     )
 )]
-pub async fn get_wishlists(Path(user_id): Path<String>) -> impl IntoResponse {
+pub async fn get_wishlists_from_user(Path(user_id): Path<String>) -> impl IntoResponse {
     let wishlist = get_user_wishlists(user_id).await;
 
     Json(wishlist)

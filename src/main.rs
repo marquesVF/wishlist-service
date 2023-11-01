@@ -27,7 +27,7 @@ async fn main() {
         .layer(ServiceBuilder::new().layer(TraceLayer::new_for_http()));
 
     println!("listening on http://{}", addr);
-    println!("  📃️ docs: http://{}/docs", addr);
+    println!("  📃️ http://{}/docs", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await

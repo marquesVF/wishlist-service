@@ -21,13 +21,13 @@ create table WishlistHasProducts (
 );
 
 -- Demo
-INSERT INTO Product (sku, name, price_in_cents)
+INSERT INTO Product (sku, price_in_cents, name)
   VALUES
-    ("354234", "Thyme & Table Stoneware Oval Serve Platter, Medallion", 1174),
-    ("234342", "Corelle Cusco 16-piece Mugless Dinnerware Set, Service for 4", 4740),
-    ("848484", "Zak Designs 12 Pieces Dinnerware Set Melamine Plastic Plates and Bowls", 3999),
-    ("292383", "Loobuu Plastic Dinnerware Set of 16 Pieces", 2699),
-    ("193211", "Lasko Cool Colors 20 Box Fan with 3-Speeds, B20200, White", 2399);
+    ("1", 1174, "Thyme & Table Stoneware Oval Serve Platter, Medallion"),
+    ("2", 4740, "Corelle Cusco 16-piece Mugless Dinnerware Set, Service for 4"),
+    ("3", 3999, "Zak Designs 12 Pieces Dinnerware Set Melamine Plastic Plates and Bowls"),
+    ("4", 2699, "Loobuu Plastic Dinnerware Set of 16 Pieces"),
+    ("5", 2399, "Lasko Cool Colors 20 Box Fan with 3-Speeds, B20200, White");
 
 INSERT INTO Wishlist (name, user_id)
   VALUES
