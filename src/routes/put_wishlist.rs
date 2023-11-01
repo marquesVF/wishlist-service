@@ -1,5 +1,5 @@
 use axum::{extract::Path, response::IntoResponse, Json};
-use sqlite_provider::{add_product_to_wishlists, get_user_wishlists};
+use sqlite_provider::add_product_to_wishlist;
 use utoipa::ToSchema;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
@@ -20,7 +20,7 @@ pub async fn put_item_in_wishlists(
     Path(wishlist_id): Path<String>,
     Json(add_product): Json<AddProductToWishlist>,
 ) -> impl IntoResponse {
-    let wishlists = add_product_to_wishlists(wishlist_id, add_product.product_sku).await;
+    let wishlists = add_product_to_wishlist(wishlist_id, add_product.product_sku).await;
 
     Json(wishlists)
 }

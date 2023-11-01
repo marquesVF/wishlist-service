@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -16,8 +17,9 @@ pub struct Product {
     pub price_in_cents: u32,
 }
 
-// pub trait WishlistProvider {
-//     fn create_wishlist() -> Wishlist;
-//     fn get_user_wishlists() -> Vec<Wishlist>;
-//     fn add_product_to_wishlist(String, String) -> Wishlist;
-// }
+#[async_trait]
+pub trait WishlistProvider {
+    async fn create_wishlist(&self, name: String, user_id: String) -> Wishlist;
+    async fn get_user_wishlists(&self, user_id: String) -> Vec<Wishlist>;
+    async fn add_product_to_wishlist(&self, wishlist_id: String, product_sku: String) -> Wishlist;
+}

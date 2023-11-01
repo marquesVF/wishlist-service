@@ -6,6 +6,7 @@ use axum::{
     routing::{get, put},
     Router,
 };
+use sqlite_provider::SQLiteProvider;
 
 use self::{
     get_wishlist::get_wishlists, post_wishlist::post_wishlist, put_wishlist::put_item_in_wishlists,

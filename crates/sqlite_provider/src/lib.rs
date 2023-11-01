@@ -1,6 +1,7 @@
 // TODO remove duplication in this file
 mod queries;
 
+use async_trait::async_trait;
 use queries::{CREATE_WISHLIST, SELECT_WISHLIST, SELECT_WISHLIST_PRODUCTS};
 use rusqlite::params;
 use tokio_rusqlite::Connection;
@@ -8,8 +9,49 @@ use wishlist::{Product, Wishlist};
 
 use crate::queries::{INSERT_PRODUCT_INTO_WISHLIST, SELECT_WISHLIST_BY_USER_ID};
 
+pub struct SQLiteProvider {
+    conn: Connection,
+}
+
+impl SQLiteProvider {
+    pub async fn new(address: &str) -> SQLiteProvider {
+        SQLiteProvider {
+            conn: Connection::open(address).await.unwrap(),
+        }
+    }
+}
+
+#[async_trait]
+pub trait WishlistProvider {
+    async fn create_wishlist(&self, name: String, user_id: String) -> Wishlist;
+    async fn get_user_wishlists(&self, user_id: String) -> Vec<Wishlist>;
+    async fn add_product_to_wishlist(&self, wishlist_id: String, product_sku: String) -> Wishlist;
+}
+
+#[async_trait]
+impl WishlistProvider for SQLiteProvider {
+    async fn create_wishlist(&self, name: String, user_id: String) -> Wishlist {
+        create_wishlist(name, user_id).await
+    }
+
+    async fn get_user_wishlists(&self, user_id: String) -> Vec<Wishlist> {
+        get_user_wishlists(user_id).await
+    }
+
+    async fn add_product_to_wishlist(&self, wishlist_id: String, product_sku: String) -> Wishlist {
+        add_product_to_wishlist(wishlist_id, product_sku).await
+    }
+}
+
+async fn foo() {
+    let provider = SQLiteProvider::new("data.db").await;
+    let x = provider
+        .create_wishlist("foo".to_string(), "b".to_string())
+        .await;
+}
+
 pub async fn create_wishlist(name: String, user_id: String) -> Wishlist {
-    let conn = Connection::open("data.db").await.unwrap();
+    let conn: Connection = Connection::open("data.db").await.unwrap();
 
     let wishlist = conn
         .call(move |conn| {
@@ -70,7 +112,7 @@ pub async fn get_user_wishlists(user_id: String) -> Vec<Wishlist> {
     res
 }
 
-pub async fn add_product_to_wishlists(wishlist_id: String, product_sku: String) -> Wishlist {
+pub async fn add_product_to_wishlist(wishlist_id: String, product_sku: String) -> Wishlist {
     let conn = Connection::open("data.db").await.unwrap();
 
     conn.call(move |conn| {
