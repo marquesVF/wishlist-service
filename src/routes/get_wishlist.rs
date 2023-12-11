@@ -1,5 +1,5 @@
 use axum::{extract::Path, response::IntoResponse, Json};
-use sqlite_provider::{get_user_wishlists, get_wishlist};
+use sqlite_provider::{get_user_wishlists::get_user_wishlists, get_wishlist::get_wishlist};
 
 #[utoipa::path(
     get,

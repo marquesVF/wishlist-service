@@ -1,5 +1,5 @@
 use axum::{http::StatusCode, response::IntoResponse, Json};
-use sqlite_provider::create_wishlist;
+use sqlite_provider::create_wishlist::create_wishlist;
 use utoipa::ToSchema;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]

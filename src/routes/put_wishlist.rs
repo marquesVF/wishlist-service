@@ -1,5 +1,5 @@
 use axum::{extract::Path, response::IntoResponse, Json};
-use sqlite_provider::add_product_to_wishlists;
+use sqlite_provider::add_product_to_wishlist::add_product_to_wishlists;
 use utoipa::ToSchema;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
