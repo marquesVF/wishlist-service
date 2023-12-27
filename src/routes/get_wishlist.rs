@@ -1,6 +1,12 @@
-use axum::{extract::Path, http::StatusCode, Json};
+use axum::{
+    extract::{Path, State},
+    http::StatusCode,
+    Json,
+};
 use data_provider::wishlists::{get_user_wishlists, get_wishlist};
 use wishlist::Wishlist;
+
+use crate::state::AppState;
 
 #[utoipa::path(
     get,
@@ -12,9 +18,10 @@ use wishlist::Wishlist;
     )
 )]
 pub async fn get_wishlists_from_user(
+    State(state): State<AppState>,
     Path(user_id): Path<String>,
 ) -> Result<Json<Vec<Wishlist>>, (StatusCode, String)> {
-    let wishlist = get_user_wishlists(user_id.as_str())
+    let wishlist = get_user_wishlists(user_id.as_str(), &state.db_pool)
         .await
         .map_err(|e| (StatusCode::NOT_FOUND, e))?;
 
@@ -38,17 +45,20 @@ pub async fn get_wishlists_from_user(
     )
 )]
 pub async fn get_wishlist_by_id(
+    State(state): State<AppState>,
     Path(wishlist_id): Path<i32>,
 ) -> Result<Json<Wishlist>, (StatusCode, String)> {
-    let wishlist = get_wishlist(&wishlist_id).await.map_err(|e| {
-        let mut msg = e.to_string();
+    let wishlist = get_wishlist(&wishlist_id, &state.db_pool)
+        .await
+        .map_err(|e| {
+            let mut msg = e.to_string();
 
-        if msg.contains("no rows returned") {
-            msg = format!("wishlist {} doesn't exist", wishlist_id);
-        }
+            if msg.contains("no rows returned") {
+                msg = format!("wishlist {} doesn't exist", wishlist_id);
+            }
 
-        (StatusCode::NOT_FOUND, msg)
-    })?;
+            (StatusCode::NOT_FOUND, msg)
+        })?;
 
     Ok(Json(wishlist))
 }

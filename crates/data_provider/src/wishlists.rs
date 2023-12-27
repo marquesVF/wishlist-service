@@ -1,4 +1,4 @@
-use sqlx::postgres::PgPoolOptions;
+use sqlx::{Pool, Postgres};
 
 use wishlist::Wishlist;
 
@@ -7,15 +7,10 @@ use crate::queries::{
     select_wishlist_by_user_id, select_wishlist_products,
 };
 
-pub async fn get_user_wishlists(user_id: &str) -> Result<Vec<Wishlist>, String> {
-    // FIXME make pool a parameter to this function
-    let pool = PgPoolOptions::new()
-        .max_connections(1)
-        .connect("postgres://postgres:123@localhost/wishlistdb")
-        .await
-        .unwrap();
-
-    // FIXME handle errors
+pub async fn get_user_wishlists(
+    user_id: &str,
+    pool: &Pool<Postgres>,
+) -> Result<Vec<Wishlist>, String> {
     let wishlist_table_entries = select_wishlist_by_user_id(user_id, &pool)
         .await
         .map_err(|e| e.to_string())?;
@@ -32,14 +27,10 @@ pub async fn get_user_wishlists(user_id: &str) -> Result<Vec<Wishlist>, String> 
     Ok(wishlists)
 }
 
-pub async fn get_wishlist(wishlist_id: &i32) -> Result<Wishlist, sqlx::Error> {
-    // FIXME make pool a parameter to this function
-    let pool = PgPoolOptions::new()
-        .max_connections(1)
-        .connect("postgres://postgres:123@localhost/wishlistdb")
-        .await
-        .unwrap();
-
+pub async fn get_wishlist(
+    wishlist_id: &i32,
+    pool: &Pool<Postgres>,
+) -> Result<Wishlist, sqlx::Error> {
     let wishlist = select_wishlist_by_id(wishlist_id, &pool).await?;
 
     Ok(wishlist.to_wishlist(&pool).await?)
@@ -49,14 +40,8 @@ pub async fn create_wishlist(
     name: &str,
     user_id: &str,
     product_sku: &str,
+    pool: &Pool<Postgres>,
 ) -> Result<Wishlist, sqlx::Error> {
-    // FIXME make pool a parameter to this function
-    let pool = PgPoolOptions::new()
-        .max_connections(1)
-        .connect("postgres://postgres:123@localhost/wishlistdb")
-        .await
-        .unwrap();
-
     let id = insert_wishlist(name, user_id, &pool).await?;
     insert_product_into_wishlist(&id, product_sku, &pool).await?;
     let products = select_wishlist_products(&id, &pool).await?;
@@ -72,14 +57,8 @@ pub async fn create_wishlist(
 pub async fn add_product_to_wishlist(
     wishlist_id: &i32,
     product_sku: &str,
+    pool: &Pool<Postgres>,
 ) -> Result<Wishlist, sqlx::Error> {
-    // FIXME make pool a parameter to this function
-    let pool = PgPoolOptions::new()
-        .max_connections(1)
-        .connect("postgres://postgres:123@localhost/wishlistdb")
-        .await
-        .unwrap();
-
     insert_product_into_wishlist(wishlist_id, product_sku, &pool).await?;
 
     let wishlist = select_wishlist_by_id(wishlist_id, &pool).await?;

@@ -1,4 +1,5 @@
 ARG RUST_VERSION=1.74.1
+#ARG DATABASE_URL
 
 FROM rust:${RUST_VERSION}-slim-bookworm AS builder
 
@@ -7,6 +8,7 @@ COPY . .
 
 RUN apt update
 RUN apt install libsqlite3-dev sqlite3 -y
+#RUN echo DATABASE_URL=$DATABASE_URL > .env
 RUN \
   --mount=type=cache,target=/app/target/ \
   --mount=type=cache,target=/usr/local/cargo/registry/ \
