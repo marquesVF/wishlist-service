@@ -1,3 +1,4 @@
-pub mod wishlists;
 mod queries;
 mod tables;
+pub mod wishlists;
+

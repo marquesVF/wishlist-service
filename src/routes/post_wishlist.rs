@@ -1,6 +1,7 @@
-use axum::{http::StatusCode, response::IntoResponse, Json};
+use axum::{http::StatusCode, Json};
 use data_provider::wishlists::create_wishlist;
 use utoipa::ToSchema;
+use wishlist::Wishlist;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
 pub struct CreateWishlist {
@@ -19,8 +20,12 @@ pub struct CreateWishlist {
         (status = 404, description = "The user has no wishlists"),
     )
 )]
-pub async fn post_wishlist(Json(input): Json<CreateWishlist>) -> impl IntoResponse {
-    let wishlists = create_wishlist(&input.name, &input.user_id, &input.product_sku).await;
+pub async fn post_wishlist(
+    Json(input): Json<CreateWishlist>,
+) -> Result<(StatusCode, Json<Wishlist>), (StatusCode, String)> {
+    let wishlist = create_wishlist(&input.name, &input.user_id, &input.product_sku)
+        .await
+        .map_err(|e| (StatusCode::NOT_FOUND, e.to_string()))?;
 
-    (StatusCode::CREATED, Json(wishlists))
+    Ok((StatusCode::CREATED, Json(wishlist)))
 }

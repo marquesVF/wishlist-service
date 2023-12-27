@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use sqlx::{Pool, Postgres, Error};
+use sqlx::{Pool, Postgres};
 use wishlist::Wishlist;
 
 use crate::queries::select_wishlist_products;
@@ -12,7 +12,7 @@ pub struct WishlistTableEntry {
 }
 
 impl WishlistTableEntry {
-    pub async fn to_wishlist(self, pool: &Pool<Postgres>) -> Result<Wishlist, Error> {
+    pub async fn to_wishlist(self, pool: &Pool<Postgres>) -> Result<Wishlist, sqlx::Error> {
         let products = select_wishlist_products(&self.id, &pool).await?;
 
         Ok(Wishlist {

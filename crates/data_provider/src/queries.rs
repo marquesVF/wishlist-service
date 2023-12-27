@@ -1,12 +1,12 @@
 use crate::tables::WishlistTableEntry;
-use sqlx::{Error, Pool, Postgres};
+use sqlx::{Pool, Postgres};
 use wishlist::Product;
 
 pub async fn insert_wishlist(
     name: &str,
     user_id: &str,
     pool: &Pool<Postgres>,
-) -> Result<i32, Error> {
+) -> Result<i32, sqlx::Error> {
     let record = sqlx::query!(
         r#"INSERT INTO Wishlist (name, user_id) VALUES ($1, $2) RETURNING id"#,
         name,
@@ -21,7 +21,7 @@ pub async fn insert_wishlist(
 pub async fn select_wishlist_by_user_id(
     user_id: &str,
     pool: &Pool<Postgres>,
-) -> Result<Vec<WishlistTableEntry>, Error> {
+) -> Result<Vec<WishlistTableEntry>, sqlx::Error> {
     sqlx::query_as!(
         WishlistTableEntry,
         r#"SELECT id, name, user_id FROM Wishlist WHERE user_id = $1"#,
@@ -34,7 +34,7 @@ pub async fn select_wishlist_by_user_id(
 pub async fn select_wishlist_by_id(
     wishlist_id: &i32,
     pool: &Pool<Postgres>,
-) -> Result<WishlistTableEntry, Error> {
+) -> Result<WishlistTableEntry, sqlx::Error> {
     sqlx::query_as!(
         WishlistTableEntry,
         r#"SELECT id, name, user_id FROM Wishlist WHERE id = $1"#,
@@ -47,7 +47,7 @@ pub async fn select_wishlist_by_id(
 pub async fn select_wishlist_products(
     wishlist_id: &i32,
     pool: &Pool<Postgres>,
-) -> Result<Vec<Product>, Error> {
+) -> Result<Vec<Product>, sqlx::Error> {
     sqlx::query_as!(
         Product,
         r#"
@@ -72,7 +72,7 @@ pub async fn insert_product_into_wishlist(
     wishlist_id: &i32,
     product_sku: &str,
     pool: &Pool<Postgres>,
-) -> Result<(), Error> {
+) -> Result<(), sqlx::Error> {
     sqlx::query!(
         r#"INSERT INTO WishlistHasProducts (wishlist_id, product_sku) VALUES ($1, $2)"#,
         wishlist_id,

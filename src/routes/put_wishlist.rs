@@ -1,6 +1,7 @@
-use axum::{extract::Path, response::IntoResponse, Json};
+use axum::{extract::Path, http::StatusCode, Json};
 use data_provider::wishlists::add_product_to_wishlist;
 use utoipa::ToSchema;
+use wishlist::Wishlist;
 
 #[derive(serde::Serialize, serde::Deserialize, ToSchema)]
 pub struct AddProductToWishlist {
@@ -16,11 +17,13 @@ pub struct AddProductToWishlist {
         (status = 404, description = "The user has no wishlists"),
     )
 )]
-pub async fn put_item_in_wishlists(
+pub async fn put_item_in_wishlist(
     Path(wishlist_id): Path<i32>,
     Json(add_product): Json<AddProductToWishlist>,
-) -> impl IntoResponse {
-    let wishlists = add_product_to_wishlist(&wishlist_id, &add_product.product_sku).await;
+) -> Result<Json<Wishlist>, (StatusCode, String)> {
+    let wishlist = add_product_to_wishlist(&wishlist_id, &add_product.product_sku)
+        .await
+        .map_err(|e| (StatusCode::BAD_REQUEST, e.to_string()))?;
 
-    Json(wishlists)
+    Ok(Json(wishlist))
 }
