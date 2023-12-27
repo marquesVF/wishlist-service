@@ -5,7 +5,6 @@ use routes::register_routes;
 use std::net::SocketAddr;
 use tower_http::trace::TraceLayer;
 
-use axum::Router;
 use swagger::register_swagger;
 use tower::ServiceBuilder;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
@@ -21,7 +20,7 @@ async fn main() {
         .init();
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
-    let router = register_routes(Router::new());
+    let router = register_routes();
     let app = register_swagger(router)
         // Using tower to add tracing layer
         .layer(ServiceBuilder::new().layer(TraceLayer::new_for_http()));

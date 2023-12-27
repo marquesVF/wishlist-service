@@ -13,8 +13,13 @@ use self::{
     put_wishlist::put_item_in_wishlist,
 };
 
-pub fn register_routes(router: Router) -> Router {
-    router
+#[derive(Clone)]
+struct AppState { }
+
+pub fn register_routes() -> Router {
+    let state = AppState {};
+
+    Router::new()
         .route(
             "/wishlists/from_user/:user_id",
             get(get_wishlists_from_user),
@@ -24,4 +29,5 @@ pub fn register_routes(router: Router) -> Router {
             "/wishlists/:wishlist_id",
             get(get_wishlist_by_id).put(put_item_in_wishlist),
         )
+        .with_state(state)
 }
