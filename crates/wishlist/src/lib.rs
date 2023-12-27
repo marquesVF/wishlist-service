@@ -3,7 +3,7 @@ use utoipa::ToSchema;
 
 #[derive(Serialize, Deserialize, ToSchema, Debug)]
 pub struct Wishlist {
-    pub id: u32,
+    pub id: i32,
     pub name: String,
     pub user_id: String,
     pub products: Vec<Product>,
@@ -13,7 +13,7 @@ pub struct Wishlist {
 pub struct Product {
     pub sku: String,
     pub name: String,
-    pub price_in_cents: u32,
+    pub price_in_cents: i32,
 }
 
 // pub trait WishlistProvider {
