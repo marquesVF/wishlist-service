@@ -15,9 +15,3 @@ pub struct Product {
     pub name: String,
     pub price_in_cents: i32,
 }
-
-// pub trait WishlistProvider {
-//     fn create_wishlist() -> Wishlist;
-//     fn get_user_wishlists() -> Vec<Wishlist>;
-//     fn add_product_to_wishlist(String, String) -> Wishlist;
-// }

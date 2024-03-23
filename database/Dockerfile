@@ -8,11 +8,11 @@ COPY init.sql /docker-entrypoint-initdb.d/
 # Copy the SQL with test data
 COPY test-seed.sql /docker-entrypoint-initdb.d/
 
-ARG TEST_ENV=false
+ARG ENV=development
 
-RUN if [ "$TEST_ENV" = false ]; then \
+RUN if [ "$ENV" != "development" ]; then \
     rm /docker-entrypoint-initdb.d/test-seed.sql; \
   else \
-    echo "Keeping test seeding SQL script"; \
+    echo "Seeding database with testing data"; \
   fi
 
