@@ -1,24 +1,13 @@
-[workspace]
-members = [
-  "crates/wishlist",
-  "crates/data_provider",
-]
-
 [package]
 name = "wishlist-service"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-	
 [dependencies]
-wishlist = { path = "./crates/wishlist"}
-data_provider = { path = "./crates/data_provider"}
 axum = "0.6.20"
 axum-macros = "0.3.8"
 serde = { version = "1.0.188", features = ["derive", "rc"] }
-sqlx = { version = "0.7.3", features = ["postgres"] }
+sqlx = { version = "0.7.3", features = ["postgres", "runtime-tokio"] }
 tokio = { version = "1.33.0", features = ["full"] }
 tower = { version = "0.4.13",features = ["util", "timeout"] }
 tower-http = { version = "0.4.4", features = ["add-extension", "trace"]}

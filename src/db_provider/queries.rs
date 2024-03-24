@@ -1,6 +1,8 @@
-use crate::tables::WishlistTableEntry;
 use sqlx::{Pool, Postgres};
-use wishlist::Product;
+
+use crate::wishlist::Product;
+
+use super::tables::WishlistTableEntry;
 
 pub async fn insert_wishlist(
     name: &str,

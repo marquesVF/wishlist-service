@@ -1,8 +1,8 @@
 use sqlx::{Pool, Postgres};
 
-use wishlist::Wishlist;
+use crate::wishlist::Wishlist;
 
-use crate::queries::{
+use super::queries::{
     insert_product_into_wishlist, insert_wishlist, select_wishlist_by_id,
     select_wishlist_by_user_id, select_wishlist_products,
 };

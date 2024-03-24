@@ -3,11 +3,12 @@ pub mod post_wishlist;
 pub mod put_wishlist;
 
 use axum::{
+    http::StatusCode,
     routing::{get, post},
-    Router,
+    Json, Router,
 };
 
-use crate::state::AppState;
+use crate::state::ServerState;
 
 use self::{
     get_wishlist::{get_wishlist_by_id, get_wishlists_from_user},
@@ -15,7 +16,9 @@ use self::{
     put_wishlist::put_item_in_wishlist,
 };
 
-pub fn register_routes(state: AppState) -> Router {
+type RouteResponse<T> = Result<(StatusCode, Json<T>), (StatusCode, String)>;
+
+pub fn register_routes(state: ServerState) -> Router {
     Router::new()
         .route(
             "/wishlists/from_user/:user_id",

@@ -289,15 +289,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "data_provider"
-version = "0.1.0"
-dependencies = [
- "serde",
- "sqlx",
- "wishlist",
-]
-
-[[package]]
 name = "der"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1814,9 +1805,9 @@ dependencies = [
 
 [[package]]
 name = "tokio-stream"
-version = "0.1.14"
+version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "397c988d37662c7dda6d2208364a706264bf3d6138b11d436cbac0ad38832842"
+checksum = "267ac89e0bec6e691e5813911606935d77c476ff49024f98abcea3e7b15e37af"
 dependencies = [
  "futures-core",
  "pin-project-lite",
@@ -2257,20 +2248,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dff9641d1cd4be8d1a070daf9e3773c5f67e78b4d9d42263020c057706765c04"
 
 [[package]]
-name = "wishlist"
-version = "0.1.0"
-dependencies = [
- "serde",
- "utoipa",
-]
-
-[[package]]
 name = "wishlist-service"
 version = "0.1.0"
 dependencies = [
  "axum",
  "axum-macros",
- "data_provider",
  "dotenv",
  "serde",
  "sqlx",
@@ -2281,7 +2263,6 @@ dependencies = [
  "tracing-subscriber",
  "utoipa",
  "utoipa-swagger-ui",
- "wishlist",
 ]
 
 [[package]]

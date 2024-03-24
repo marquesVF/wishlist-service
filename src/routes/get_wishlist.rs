@@ -3,10 +3,14 @@ use axum::{
     http::StatusCode,
     Json,
 };
-use data_provider::wishlists::{get_user_wishlists, get_wishlist};
-use wishlist::Wishlist;
 
-use crate::state::AppState;
+use crate::{
+    db_provider::wishlists::{get_user_wishlists, get_wishlist},
+    state::ServerState,
+    wishlist::Wishlist,
+};
+
+use super::RouteResponse;
 
 #[utoipa::path(
     get,
@@ -18,7 +22,7 @@ use crate::state::AppState;
     )
 )]
 pub async fn get_wishlists_from_user(
-    State(state): State<AppState>,
+    State(state): State<ServerState>,
     Path(user_id): Path<String>,
 ) -> Result<Json<Vec<Wishlist>>, (StatusCode, String)> {
     let wishlist = get_user_wishlists(user_id.as_str(), &state.db_pool)
@@ -45,9 +49,9 @@ pub async fn get_wishlists_from_user(
     )
 )]
 pub async fn get_wishlist_by_id(
-    State(state): State<AppState>,
+    State(state): State<ServerState>,
     Path(wishlist_id): Path<i32>,
-) -> Result<Json<Wishlist>, (StatusCode, String)> {
+) -> RouteResponse<Wishlist> {
     let wishlist = get_wishlist(&wishlist_id, &state.db_pool)
         .await
         .map_err(|e| {
@@ -60,5 +64,5 @@ pub async fn get_wishlist_by_id(
             (StatusCode::NOT_FOUND, msg)
         })?;
 
-    Ok(Json(wishlist))
+    Ok((StatusCode::OK, Json(wishlist)))
 }

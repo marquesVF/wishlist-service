@@ -1,8 +1,9 @@
 use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
-use wishlist::Wishlist;
 
-use crate::queries::select_wishlist_products;
+use crate::wishlist::Wishlist;
+
+use super::queries::select_wishlist_products;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WishlistTableEntry {

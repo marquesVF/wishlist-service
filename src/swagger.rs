@@ -1,12 +1,14 @@
-use crate::routes::{
-    get_wishlist::{__path_get_wishlist_by_id, __path_get_wishlists_from_user},
-    post_wishlist::{CreateWishlist, __path_post_wishlist},
-    put_wishlist::{AddProductToWishlist, __path_put_item_in_wishlist},
+use crate::{
+    routes::{
+        get_wishlist::{__path_get_wishlist_by_id, __path_get_wishlists_from_user},
+        post_wishlist::{WishlistCreation, __path_post_wishlist},
+        put_wishlist::{AddProductToWishlist, __path_put_item_in_wishlist},
+    },
+    wishlist::{Product, Wishlist},
 };
 use axum::Router;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
-use wishlist::{Product, Wishlist};
 
 #[derive(OpenApi)]
 #[openapi(
@@ -16,7 +18,10 @@ use wishlist::{Product, Wishlist};
         put_item_in_wishlist,
         get_wishlist_by_id
     ),
-    components(schemas(Wishlist, CreateWishlist, Product, AddProductToWishlist))
+    components(schemas(Wishlist, WishlistCreation, Product, AddProductToWishlist)),
+    tags(
+        (name = "Wishlist", description = "Manage users wishlists")
+    )
 )]
 struct ApiDoc;
 

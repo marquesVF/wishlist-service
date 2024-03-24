@@ -1,13 +1,13 @@
 use axum::{extract::State, http::StatusCode, Json};
-use data_provider::wishlists::create_wishlist;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
-use wishlist::Wishlist;
 
-use crate::state::AppState;
+use crate::{db_provider::wishlists::create_wishlist, state::ServerState, wishlist::Wishlist};
+
+use super::RouteResponse;
 
 #[derive(Serialize, Deserialize, ToSchema)]
-pub struct CreateWishlist {
+pub struct WishlistCreation {
     pub name: String,
     pub user_id: String,
     pub product_sku: String,
@@ -17,16 +17,16 @@ pub struct CreateWishlist {
     post,
     path = "/wishlists",
     tag = "Wishlist",
-    request_body = CreateWishlist,
+    request_body = WishlistCreation,
     responses(
         (status = 201, body = Wishlist, description = "Wishlist was created"),
         (status = 404, description = "The user has no wishlists"),
     )
 )]
 pub async fn post_wishlist(
-    State(state): State<AppState>,
-    Json(input): Json<CreateWishlist>,
-) -> Result<(StatusCode, Json<Wishlist>), (StatusCode, String)> {
+    State(state): State<ServerState>,
+    Json(input): Json<WishlistCreation>,
+) -> RouteResponse<Wishlist> {
     let wishlist = create_wishlist(
         &input.name,
         &input.user_id,
