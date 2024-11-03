@@ -8,9 +8,10 @@ This is a showcase of a microservice written in Rust. The microservice exposes:
 ## ⚙️ Local development setup:
 
 1. Install [rustup](https://www.rust-lang.org/tools/install) for rust version management;
-2. Install [cargo-watch](https://crates.io/crates/cargo-watch) for live reloading of the server: run `cargo install cargo-watch` to install it;
-3. Run `cargo watch -x run` to start the server, and automatically apply your changes during development;
-4. This project uses [sqlx](https://crates.io/crates/sqlx) for database connection and compile-time validation of SQL queries. Therefore, you need to have the database available during compilation;
+2. (Optional) Install [cargo-watch](https://crates.io/crates/cargo-watch) for live reloading of the server: run `cargo install cargo-watch` to install it;
+3. Create an `.env` file from the `env.template`. You need to set the PostgreSQL database URL there;
+4. Run `cargo watch -x run` to start the server, and automatically apply your changes during development;
+5. This project uses [sqlx](https://crates.io/crates/sqlx) for database connection and compile-time validation of SQL queries. Therefore, you need to have the database available during compilation;
 
 ### Setup database
 

@@ -36,8 +36,8 @@ async fn main() {
     let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     println!("listening on http://{}", addr);
     println!("  📃️ http://{}/docs", addr);
-    axum::Server::bind(&addr)
-        .serve(router.into_make_service())
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    axum::serve(listener, router.into_make_service())
         .await
         .unwrap();
 }
