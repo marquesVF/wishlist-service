@@ -7,6 +7,7 @@ use crate::{db_provider::wishlists::create_wishlist, state::ServerState, wishlis
 use super::RouteResponse;
 
 #[derive(Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct WishlistCreation {
     pub name: String,
     pub user_id: String,

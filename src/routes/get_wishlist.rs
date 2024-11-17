@@ -41,7 +41,7 @@ pub async fn get_wishlists_from_user(
 
 #[utoipa::path(
     get,
-    path = "/wishlists/{wishlist_id}",
+    path = "/wishlists/{id}",
     tag = "Wishlist",
     responses(
         (status = 200, body = Vec<Wishlist>, description = "Returns an user's wishlists"),
@@ -50,19 +50,17 @@ pub async fn get_wishlists_from_user(
 )]
 pub async fn get_wishlist_by_id(
     State(state): State<ServerState>,
-    Path(wishlist_id): Path<i32>,
+    Path(id): Path<i32>,
 ) -> RouteResponse<Wishlist> {
-    let wishlist = get_wishlist(&wishlist_id, &state.db_pool)
-        .await
-        .map_err(|e| {
-            let mut msg = e.to_string();
+    let wishlist = get_wishlist(&id, &state.db_pool).await.map_err(|e| {
+        let mut msg = e.to_string();
 
-            if msg.contains("no rows returned") {
-                msg = format!("wishlist {} doesn't exist", wishlist_id);
-            }
+        if msg.contains("no rows returned") {
+            msg = format!("wishlist {} doesn't exist", id);
+        }
 
-            (StatusCode::NOT_FOUND, msg)
-        })?;
+        (StatusCode::NOT_FOUND, msg)
+    })?;
 
     Ok((StatusCode::OK, Json(wishlist)))
 }
